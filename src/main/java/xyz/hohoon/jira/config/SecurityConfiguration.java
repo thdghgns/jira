@@ -43,7 +43,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                     .antMatchers("/", "/v1/login", "/v1/join").permitAll()
-                    .antMatchers("/js/*", "/css/*", "/img/*").permitAll()
+                    .antMatchers("/css/*", "/fonts/*", "/img/**", "/js/*").permitAll()
+                    .antMatchers("/*.js", "/*.png", "/*.html").permitAll()
                     .anyRequest().authenticated()
                 .and().exceptionHandling()
                 .and().addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
