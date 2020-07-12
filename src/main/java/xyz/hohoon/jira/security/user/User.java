@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import xyz.hohoon.jira.entity.Issue;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -30,6 +31,11 @@ public class User implements UserDetails {
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "assignee", fetch = FetchType.LAZY)
+    private List<Issue> assignedIssues;
+    @OneToMany(mappedBy = "reporter", fetch = FetchType.LAZY)
+    private List<Issue> reportedIssues;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
