@@ -1,6 +1,5 @@
 package xyz.hohoon.jira.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,12 +22,13 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public long joinMember(String username, String password) {
+    public long joinMember(String username, String email, String password) {
         if (isUserExist(username)) {
             throw new IllegalArgumentException("user already exist");
         }
         return userRepository.save(User.builder()
                 .username(username)
+                .email(email)
                 .password(passwordEncoder.encode(password))
                 .roles(Collections.singletonList("ROLE_USER"))
                 .build()).getId();
