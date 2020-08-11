@@ -1,9 +1,6 @@
 package xyz.hohoon.jira.security.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,16 +15,20 @@ import java.util.stream.Collectors;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@RequiredArgsConstructor
 @Builder
 @Entity
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NonNull
     @Column(length = 30, nullable = false, unique = true)
     private String username;
+    @NonNull
     @Column(length = 100, nullable = false)
     private String email;
+    @NonNull
     @Column(length = 100, nullable = false)
     private String password;
     @ElementCollection(fetch = FetchType.EAGER)

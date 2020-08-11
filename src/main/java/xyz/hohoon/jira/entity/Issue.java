@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity(name = "issue")
-public class Issue extends BaseEntity{
+public class Issue extends BaseEntity {
     @Id
     @Column(updatable = false)
     private String key;
