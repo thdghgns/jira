@@ -52,7 +52,7 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String token) {
         try {
-            return getExpirationDateFromToken(token).before(new Date());
+            return getExpirationDateFromToken(token).after(new Date());
         } catch (Exception e) {
             return false;
         }
