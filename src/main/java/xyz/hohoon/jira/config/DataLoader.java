@@ -12,6 +12,7 @@ import xyz.hohoon.jira.repository.ProjectRepository;
 import xyz.hohoon.jira.repository.VersionRepository;
 import xyz.hohoon.jira.security.user.User;
 import xyz.hohoon.jira.security.user.UserRepository;
+import xyz.hohoon.jira.service.UserService;
 
 /**
  * make default data for local test
@@ -20,7 +21,7 @@ import xyz.hohoon.jira.security.user.UserRepository;
 @Profile("local")
 public class DataLoader implements ApplicationRunner {
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
     @Autowired
     ComponentRepository componentRepository;
     @Autowired
@@ -32,7 +33,7 @@ public class DataLoader implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         // user
         for (int i = 0; i < 10; i++) {
-            userRepository.save(new User("user" + i, "user@email.com", "user" + i));
+            userService.joinMember("user" + i, "user@email.com", "user" + i);
         }
 
         // component
