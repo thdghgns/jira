@@ -14,7 +14,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from './store/store'
+import store from './stores/store'
 import './plugins/base'
 import './plugins/chartist'
 import './plugins/vee-validate'

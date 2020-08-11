@@ -10,39 +10,39 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      component: () => import('@/views/dashboard/Index'),
+      component: () => import('@/views/Index'),
       children: [
         // Dashboard
         {
           name: 'Dashboard',
           path: '',
-          component: () => import('@/views/dashboard/pages/Dashboard'),
+          component: () => import('@/views/pages/Dashboard'),
         },
         // Pages
         {
           name: 'Projects',
           path: 'projects',
-          component: () => import('@/views/dashboard/pages/Projects'),
+          component: () => import('@/views/pages/Projects'),
         },
         {
           name: 'Issues',
           path: 'issues',
-          component: () => import('@/views/dashboard/pages/Issues'),
+          component: () => import('@/views/pages/Issues'),
         },
         {
           name: 'Components',
           path: 'components',
-          component: () => import('@/views/dashboard/pages/Components'),
+          component: () => import('@/views/pages/Components'),
         },
         {
           name: 'Login',
           path: 'login',
-          component: () => import('@/views/Login'),
+          component: () => import('@/views/pages/Login'),
         },
         {
           name: 'Register',
           path: 'register',
-          component: () => import('@/views/Register'),
+          component: () => import('@/views/pages/Register'),
         },
       ],
     },
