@@ -21,8 +21,10 @@ import './plugins/vee-validate'
 import vuetify from './plugins/vuetify'
 import i18n from './i18n'
 import VueCookie from 'vue-cookie'
+import axios from 'axios'
 
 Vue.config.productionTip = false
+Vue.prototype.$http = axios
 
 Vue.use(VueCookie)
 
