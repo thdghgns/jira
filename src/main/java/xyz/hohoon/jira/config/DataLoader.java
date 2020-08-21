@@ -37,17 +37,17 @@ public class DataLoader implements ApplicationRunner {
         }
 
         // component
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 100; i++) {
             componentRepository.save(new xyz.hohoon.jira.entity.Component("COMP" + i, "COMP" + i, "COMP" + i));
         }
 
         // project
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 100; i++) {
             projectRepository.save(new Project("PROJ" + i, "PROJ" + i, "PROJ" + i));
         }
 
         // version
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             versionRepository.save(new Version("JIRA_V_" + 1));
         }
     }
