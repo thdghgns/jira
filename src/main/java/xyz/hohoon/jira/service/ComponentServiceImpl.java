@@ -1,8 +1,6 @@
 package xyz.hohoon.jira.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import xyz.hohoon.jira.dto.ComponentDto;
 import xyz.hohoon.jira.entity.Component;
@@ -18,9 +16,10 @@ public class ComponentServiceImpl implements ComponentService {
     private ComponentRepository componentRepository;
 
     @Override
-    public List<ComponentDto.Response> getAllComponents(Pageable pageable) {
-        Page<Component> componentPage = componentRepository.findAll(pageable);
-        return componentPage.getContent().stream()
+    public List<ComponentDto.Response> getAllComponents() {
+        List<Component> componentPage = componentRepository.findAll();
+
+        return componentPage.stream()
                 .map(c -> new ComponentDto.Response(c.getKey(), c.getName(), c.getDescription()))
                 .collect(Collectors.toList());
     }

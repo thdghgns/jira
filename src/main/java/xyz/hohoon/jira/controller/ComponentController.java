@@ -1,7 +1,6 @@
 package xyz.hohoon.jira.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import xyz.hohoon.jira.dto.ComponentDto;
 import xyz.hohoon.jira.service.ComponentService;
@@ -16,8 +15,8 @@ public class ComponentController {
     private ComponentService componentService;
 
     @GetMapping("/api/component")
-    public List<ComponentDto.Response> getAllComponents(final Pageable pageable) {
-        return componentService.getAllComponents(pageable);
+    public List<ComponentDto.Response> getAllComponents() {
+        return componentService.getAllComponents();
     }
 
     @GetMapping("/api/component/{componentKey}")
@@ -26,12 +25,12 @@ public class ComponentController {
     }
 
     @PostMapping("/api/component")
-    public ComponentDto.Response createComponent(@Valid ComponentDto.Request request) {
+    public ComponentDto.Response createComponent(@Valid @RequestBody ComponentDto.Request request) {
         return componentService.createComponent(request);
     }
 
     @PutMapping("/api/component")
-    public ComponentDto.Response updateComponent(@Valid ComponentDto.Request request) {
+    public ComponentDto.Response updateComponent(@Valid @RequestBody ComponentDto.Request request) {
         return componentService.updateComponent(request);
     }
 
