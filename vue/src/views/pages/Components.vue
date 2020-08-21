@@ -37,9 +37,10 @@
 
     <v-dialog v-model="dialogDelete" max-width="500px">
       <v-card>
-        <v-card-title>Delete</v-card-title>
+        <v-card-title>Delete Component</v-card-title>
         <v-card-text>Do you really want to delete the item `{{itemToDelete.key}}`?</v-card-text>
         <v-card-actions>
+          <v-spacer></v-spacer>
           <v-btn color="primary" text @click="dialogDelete = false">Close</v-btn>
           <v-btn color="primary" text @click="deleteItem()">Delete</v-btn>
         </v-card-actions>
@@ -48,7 +49,7 @@
 
     <v-dialog v-model="dialogUpdate" max-width="600px">
       <v-card>
-        <v-card-title>Update</v-card-title>
+        <v-card-title>Update Component</v-card-title>
         <v-card-text>
           <v-container>
             <v-row>
@@ -65,6 +66,7 @@
           </v-container>
         </v-card-text>
         <v-card-actions>
+          <v-spacer></v-spacer>
           <v-btn color="primary" text @click="dialogUpdate = false">Close</v-btn>
           <v-btn color="primary" text @click="updateItem()">Update</v-btn>
         </v-card-actions>
@@ -73,7 +75,7 @@
 
     <v-dialog v-model="dialogCreate" max-width="600px">
       <v-card>
-        <v-card-title>Create</v-card-title>
+        <v-card-title>Create Component</v-card-title>
         <v-card-text>
           <v-container>
             <v-row>
@@ -88,8 +90,10 @@
               </v-col>
             </v-row>
           </v-container>
+          Once created, the key cannot be modified.
         </v-card-text>
         <v-card-actions>
+          <v-spacer></v-spacer>
           <v-btn color="primary" text @click="dialogCreate = false">Close</v-btn>
           <v-btn color="primary" text @click="createItem()">Create</v-btn>
         </v-card-actions>
