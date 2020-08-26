@@ -1,184 +1,235 @@
-<template>
-  <v-container
-    id="projects"
-    fluid
-    tag="section"
-  >
-
-    <base-material-card
-      icon="mdi-clipboard-text"
-      title="Simple Table"
-      class="px-5 py-3"
-    >
-      <v-simple-table>
-        <thead>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+  <v-container id="projects" fluid tag="section">
+    <base-material-card icon="mdi-clipboard-text" title="Projects" class="px-5 py-3">
+      <v-row>
+        <v-col cols="12" md="8">
+          <v-text-field v-model="search" label="search" />
+        </v-col>
+        <v-col cols="12" md="4">
+          <v-btn class="mx-2" fab color="green"
+                 @click="handleCreateBtnClick">
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
+      <v-data-table id="grid" :headers="headers" :items="projects" :items-per-page="pageSize"
+                    :search="search" :single-select="true" item-key="key" class="elevation-1"
+                    :footer-props="footerProps">
+        <template v-slot:item="row">
           <tr>
-            <th class="primary--text">
-              ID
-            </th>
-            <th class="primary--text">
-              Name
-            </th>
-            <th class="primary--text">
-              Country
-            </th>
-            <th class="primary--text">
-              City
-            </th>
-            <th class="text-right primary--text">
-              Salary
-            </th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>Dakota Rice</td>
-            <td>Niger</td>
-            <td>Oud-Turnhout</td>
-            <td class="text-right">
-              $36,738
+            <td>{{ row.item.key }}</td>
+            <td>{{ row.item.name }}</td>
+            <td>{{ row.item.description }}</td>
+            <td align="center">
+              <v-btn fab dark x-small
+                     color="red" @click="handleTableDeleteRowClick(row.item)">
+                <v-icon>mdi-minus</v-icon>
+              </v-btn>
+              <v-btn fab x-small dark
+                     color="blue" @click="handleTableEditRowClick(row.item)">
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
             </td>
           </tr>
-
-          <tr>
-            <td>2</td>
-            <td>Minverva Hooper</td>
-            <td>Curaçao</td>
-            <td>Sinaas-Waas</td>
-            <td class="text-right">
-              $23,789
-            </td>
-          </tr>
-
-          <tr>
-            <td>3</td>
-            <td>Sage Rodriguez</td>
-            <td>Netherlands</td>
-            <td>Baileux</td>
-            <td class="text-right">
-              $56,142
-            </td>
-          </tr>
-
-          <tr>
-            <td>4</td>
-            <td>Philip Chaney</td>
-            <td>Korea, South</td>
-            <td>Overland Park</td>
-            <td class="text-right">
-              $38,735
-            </td>
-          </tr>
-
-          <tr>
-            <td>5</td>
-            <td>Doris Greene</td>
-            <td>Malawi</td>
-            <td>Feldkirchen in Kärnten</td>
-            <td class="text-right">
-              $63,542
-            </td>
-          </tr>
-
-          <tr>
-            <td>6</td>
-            <td>Mason Porter</td>
-            <td>Chile</td>
-            <td>Gloucester</td>
-            <td class="text-right">
-              $78,615
-            </td>
-          </tr>
-        </tbody>
-      </v-simple-table>
+        </template>
+      </v-data-table>
     </base-material-card>
 
-    <div class="py-3" />
+    <v-dialog v-model="dialogDelete" max-width="500px">
+      <v-card>
+        <v-card-title>Delete Project</v-card-title>
+        <v-card-text>Do you really want to delete the item `{{itemToDelete.key}}`?</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="dialogDelete = false">Close</v-btn>
+          <v-btn color="primary" text @click="deleteItem()">Delete</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
-    <base-material-card
-      color="success"
-      dark
-      icon="mdi-clipboard-plus"
-      title="Table on Dark Background"
-      class="px-5 py-3"
-    >
-      <v-simple-table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Country</th>
-            <th>City</th>
-            <th class="text-right">
-              Salary
-            </th>
-          </tr>
-        </thead>
+    <v-dialog v-model="dialogUpdate" max-width="600px">
+      <v-card>
+        <v-card-title>Update Project</v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field label="Key" readonly v-model="itemToUpdate.key"></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field label="Name" required v-model="itemToUpdate.name"></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field label="Description" v-model="itemToUpdate.description"></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="dialogUpdate = false">Close</v-btn>
+          <v-btn color="primary" text @click="updateItem()">Update</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>Dakota Rice</td>
-            <td>Niger</td>
-            <td>Oud-Turnhout</td>
-            <td class="text-right">
-              $36,738
-            </td>
-          </tr>
-
-          <tr>
-            <td>2</td>
-            <td>Minverva Hooper</td>
-            <td>Curaçao</td>
-            <td>Sinaas-Waas</td>
-            <td class="text-right">
-              $23,789
-            </td>
-          </tr>
-
-          <tr>
-            <td>3</td>
-            <td>Sage Rodriguez</td>
-            <td>Netherlands</td>
-            <td>Baileux</td>
-            <td class="text-right">
-              $56,142
-            </td>
-          </tr>
-
-          <tr>
-            <td>4</td>
-            <td>Philip Chaney</td>
-            <td>Korea, South</td>
-            <td>Overland Park</td>
-            <td class="text-right">
-              $38,735
-            </td>
-          </tr>
-
-          <tr>
-            <td>5</td>
-            <td>Doris Greene</td>
-            <td>Malawi</td>
-            <td>Feldkirchen in Kärnten</td>
-            <td class="text-right">
-              $63,542
-            </td>
-          </tr>
-
-          <tr>
-            <td>6</td>
-            <td>Mason Porter</td>
-            <td>Chile</td>
-            <td>Gloucester</td>
-            <td class="text-right">
-              $78,615
-            </td>
-          </tr>
-        </tbody>
-      </v-simple-table>
-    </base-material-card>
+    <v-dialog v-model="dialogCreate" max-width="600px">
+      <v-card>
+        <v-card-title>Create Project</v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field label="Key" required v-model="itemToCreate.key"></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field label="Name" required v-model="itemToCreate.name"></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field label="Description" v-model="itemToCreate.description"></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+          Once created, the key cannot be modified.
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="dialogCreate = false">Close</v-btn>
+          <v-btn color="primary" text @click="createItem()">Create</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
+
+<script>
+  // Components
+  import authHeader from '../../services/auth-header'
+
+  export default {
+    name: 'Projects',
+
+    components: {
+    },
+
+    data: () => ({
+      pageSize: 10,
+      page: 1,
+      footerProps: { 'items-per-page-options': [5, 10, 15, 30, 50] },
+      search: '',
+      selected: [],
+      headers: [
+        {
+          sortable: false,
+          text: 'key',
+          value: 'key',
+          align: 'left',
+          class: 'primary--text display-1',
+        },
+        {
+          sortable: false,
+          text: 'name',
+          value: 'name',
+          align: 'left',
+          class: 'primary--text display-1',
+        },
+        {
+          sortable: false,
+          text: 'description',
+          value: 'description',
+          align: 'left',
+          class: 'primary--text display-1',
+        },
+        {
+          sortable: false,
+          text: 'actions',
+          value: 'actions',
+          align: 'center',
+          class: 'primary--text display-1',
+        },
+      ],
+      projects: [],
+      dialogDelete: false,
+      itemToDelete: [],
+      dialogUpdate: false,
+      itemToUpdate: [],
+      dialogCreate: false,
+      itemToCreate: [],
+    }),
+
+    methods: {
+      getItemPerPage () {
+        const baseURI = process.env.VUE_APP_API_SERVER
+
+        this.$http.get(`${baseURI}/api/project`, {
+          headers: authHeader(),
+        }).then((result) => {
+          console.log(result)
+          this.projects = result.data
+        })
+      },
+      handleTableDeleteRowClick (item) {
+        this.itemToDelete = item
+        this.dialogDelete = !this.dialogDelete
+      },
+      deleteItem () {
+        const baseURI = process.env.VUE_APP_API_SERVER
+
+        this.$http.delete(`${baseURI}/api/project/` + this.itemToDelete.key, {
+          headers: authHeader(),
+        }).then((result) => {
+          console.log(result)
+        })
+
+        this.dialogDelete = false
+        this.getItemPerPage()
+      },
+      handleTableEditRowClick (item) {
+        this.itemToUpdate = item
+        this.dialogUpdate = !this.dialogUpdate
+      },
+      updateItem () {
+        const baseURI = process.env.VUE_APP_API_SERVER
+
+        this.$http.put(`${baseURI}/api/project/`, this.itemToUpdate, {
+          headers: authHeader(),
+        }).then((result) => {
+          console.log(result)
+        })
+
+        this.dialogUpdate = false
+        this.getItemPerPage()
+      },
+      handleCreateBtnClick () {
+        this.dialogCreate = !this.dialogCreate
+      },
+      createItem () {
+        const baseURI = process.env.VUE_APP_API_SERVER
+        var postData = {
+          key: this.itemToCreate.key,
+          name: this.itemToCreate.name,
+          description: this.itemToCreate.description,
+        }
+
+        this.$http.post(`${baseURI}/api/project/`, postData, {
+          headers: authHeader(),
+        }).then((result) => {
+          console.log(result)
+        })
+
+        this.dialogCreate = false
+        this.itemToCreate = []
+        this.getItemPerPage()
+      },
+    },
+
+    created () {
+      this.$i18n.locale = 'en'
+      this.getItemPerPage()
+    },
+
+    beforeDestroy () {
+      this.$i18n.locale = 'en'
+    },
+  }
+</script>

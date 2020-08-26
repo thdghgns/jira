@@ -1,6 +1,5 @@
 package xyz.hohoon.jira.service;
 
-import org.springframework.data.domain.Pageable;
 import xyz.hohoon.jira.dto.ComponentDto;
 
 import java.util.List;

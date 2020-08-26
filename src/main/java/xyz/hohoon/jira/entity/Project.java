@@ -1,14 +1,14 @@
 package xyz.hohoon.jira.entity;
 
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 @RequiredArgsConstructor
 @NoArgsConstructor
 public class Project extends BaseEntity {
