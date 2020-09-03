@@ -26,9 +26,15 @@ public class ComponentServiceImpl implements ComponentService {
 
     @Override
     public ComponentDto.Response findComponent(String componentKey) {
+        Component component = getComponentOrThrowException(componentKey);
+        return new ComponentDto.Response(component.getKey(), component.getName(), component.getDescription());
+    }
+
+    @Override
+    public Component getComponentOrThrowException(String componentKey) {
         Component component = componentRepository.findById(componentKey)
                 .orElseThrow(() -> new ApplicationException.ResourceNotFoundException("component not found"));
-        return new ComponentDto.Response(component.getKey(), component.getName(), component.getDescription());
+        return component;
     }
 
     @Override
