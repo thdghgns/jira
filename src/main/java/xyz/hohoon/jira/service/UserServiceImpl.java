@@ -1,8 +1,11 @@
 package xyz.hohoon.jira.service;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import xyz.hohoon.jira.exception.ApplicationException;
 import xyz.hohoon.jira.security.JwtTokenProvider;
 import xyz.hohoon.jira.security.user.User;
 import xyz.hohoon.jira.security.user.UserRepository;
@@ -48,5 +51,20 @@ public class UserServiceImpl implements UserService{
 
     private boolean isUserExist(String username) {
         return userRepository.findByUsername(username).isPresent();
+    }
+
+    @Override
+    public User getUserOrThrowException(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ApplicationException.ResourceNotFoundException("user not exist"));
+        return user;
+    }
+
+    @Override
+    public User getCurrentUser() {
+        Object principal =  SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails)principal;
+        String username = userDetails.getUsername();
+        return getUserOrThrowException(username);
     }
 }
