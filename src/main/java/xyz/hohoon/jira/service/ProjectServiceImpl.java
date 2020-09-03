@@ -7,6 +7,7 @@ import xyz.hohoon.jira.entity.Project;
 import xyz.hohoon.jira.exception.ApplicationException;
 import xyz.hohoon.jira.repository.ProjectRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,9 +27,15 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectDto.Response findProject(String projectKey) {
+        Project project = getProjectOrThrowException(projectKey);
+        return new ProjectDto.Response(project.getKey(), project.getName(), project.getDescription());
+    }
+
+    @Override
+    public Project getProjectOrThrowException(String projectKey) {
         Project project = projectRepository.findById(projectKey)
                 .orElseThrow(() -> new ApplicationException.ResourceNotFoundException("project not found"));
-        return new ProjectDto.Response(project.getKey(), project.getName(), project.getDescription());
+        return project;
     }
 
     @Override
@@ -62,5 +69,15 @@ public class ProjectServiceImpl implements ProjectService {
         } else {
             throw new ApplicationException.ResourceNotFoundException("project not found");
         }
+    }
+
+    @Transactional
+    @Override
+    public long increaseAndGetProjectIssueCount(String projectKey) {
+        Project project = getProjectOrThrowException(projectKey);
+        project.setCount(project.getCount() +1);
+        projectRepository.save(project);
+
+        return project.getCount();
     }
 }
