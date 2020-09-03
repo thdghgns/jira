@@ -15,7 +15,6 @@ import xyz.hohoon.jira.statemachine.IssueState;
 import xyz.hohoon.jira.statemachine.StatemachineUtils;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 public class IssueController {
