@@ -6,4 +6,10 @@ public class ApplicationException {
 
         }
     }
+
+    public static class DeleteFailedException extends RuntimeException {
+        public DeleteFailedException(String message) {
+
+        }
+    }
 }

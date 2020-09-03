@@ -1,5 +1,6 @@
 package xyz.hohoon.jira.entity;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
 @RequiredArgsConstructor
 @NoArgsConstructor
 public class Version extends BaseEntity {
