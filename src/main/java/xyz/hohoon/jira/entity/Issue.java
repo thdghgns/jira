@@ -1,11 +1,15 @@
 package xyz.hohoon.jira.entity;
 
+import lombok.Builder;
+import lombok.Getter;
 import xyz.hohoon.jira.code.IssuePriority;
 import xyz.hohoon.jira.security.user.User;
 
 import javax.persistence.*;
 import java.util.Date;
 
+@Builder
+@Getter
 @Entity(name = "issue")
 public class Issue extends BaseEntity {
     @Id
